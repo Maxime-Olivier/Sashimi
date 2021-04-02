@@ -86,7 +86,31 @@ def key_rank(n, arr):
     res.append(nb_occ[:3])
     return res
 
-         
+
+def find_similar():
+    data = get_all_files()
+    res = []
+    for name_compare, pics_compare in data:
+
+        similar = []
+        similar.append(name_compare)
+
+        for name, pics in data:
+            if (name == name_compare):
+                continue
+            diff = 0
+
+            for i in range(0, len(pics)):
+                diff += abs(pics_compare[i] - pics[i])
+            
+            if diff < 0.25:
+                similar.append(name)
+
+        res.append(similar)
+    return res
+        
+
+
 
 if __name__ == "__main__":
 
@@ -94,7 +118,7 @@ if __name__ == "__main__":
     final = clean_res(data)
     
     print("~~~~~~~~RESULTATS~~~~~~~~")
-    
+    '''
     print(len(final))
 
     res = key_rank(120, final)
@@ -108,3 +132,7 @@ if __name__ == "__main__":
         k += 1
     
     plt.show()
+    '''
+    res = find_similar()
+    for x in res:
+        print(x)
