@@ -2,6 +2,14 @@
 
 Participation au challenge Energy Data Hack de mars 2021.
 
+# Installation
+
+Le projet a été réalisé avec Python 3.8.
+
+Pour exécuter la solution, il faut donc avoir [installé Python](https://www.python.org/downloads/).
+Il faut aussi s'assurer d'avoir les paquets Python énumérés dans `requirements.txt`.
+Vous pouvez pour cela utiliser un [environnement virtuel](https://docs.python.org/fr/3.6/tutorial/venv.html)
+
 ### Equipe
 maxime.olivier-mouton  
 stepan.kinossian  
