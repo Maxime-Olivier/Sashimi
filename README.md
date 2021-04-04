@@ -15,7 +15,7 @@ Vous pouvez aussi exécuter la commande suivante :
 
 ### Equipe
 Maxime Olivier-Mouton - maxime.olivier-mouton  
-Stépan Kinpssian - stepan.kinossian  
+Stépan Kinossian - stepan.kinossian  
 Etienne Lacroix - etienne.lacroix  
 Sylvain Blanchard-Gaillard - sylvain.blanchard-gaillard  
 Maxime Fenot - maxime.fenot  
