@@ -4,6 +4,7 @@ import os
 import operator
 import random
 
+
 def get_average(file):
     average_plot = []
     pics, info = get_pics_from_file("Hackaton/data/" + file)
@@ -15,12 +16,13 @@ def get_average(file):
     
     return average_plot
 
+
 def clean_res(l):
     res = []
     for a, b in l:
-        if (a != "NOKEY" and a != "SHIFT"):
-            res.append(a)
+        res.append(a)
     return res
+
 
 def get_all_files():
     data = []  
@@ -67,6 +69,7 @@ def count_occ(arr):
 
     return res
 
+
 def key_rank(n, arr):
     occ = []
     res = []
@@ -108,8 +111,78 @@ def find_similar():
 
         res.append(similar)
     return res
-        
+     
+    
+def unite_letter(arr):
+    for i in range(len(arr)):
+        if (arr[i] in ['1', '2', '3', '4']):
+            arr[i] = "1234"
+        elif (arr[i] in ['5', '7', '8']):
+            arr[i] = "578"
+        elif (arr[i] in ['6', '9']):
+            arr[i] = "69"
+        elif (arr[i] in ['A', 'W', 'Q']):
+            arr[i] = "AWQ"
+        elif (arr[i] in ['B', 'H', 'U']):
+            arr[i] = "BHU"
+        elif (arr[i] in ['D', 'E']):
+            arr[i] = "DE"
+        elif (arr[i] in ['F', 'R']):
+            arr[i] = "FR"
+        elif (arr[i] in ['G', 'T', 'Y']):
+            arr[i] = "GTY"
+        elif (arr[i] in ['H', 'B', 'U']):
+            arr[i] = "HBU"
+        elif (arr[i] in ['M', 'P']):
+            arr[i] = "MP"
+        elif (arr[i] in ['X', 'Z']):
+            arr[i] = "XZ"
+        elif (arr[i] in ['SPACE', 'S']):
+            arr[i] = "SPACE S"
+            
+            
+def clean_short_list(arr):
+    res = []
+    for i in arr:
+        if len(i) > 10:
+            res.append(i)
+    return res
 
+
+def key_rank_with_block(arr):
+    res = []
+    for bloc in arr:
+        nb_occ = count_occ(bloc)
+        nb_occ.sort(key=lambda tup: tup[1], reverse=True)
+        res.append(nb_occ[:3])
+    return res
+
+
+def key_rank_nokey(arr):
+    res = []
+    lenght = len(arr)
+    i = 0
+    bloc = []
+    count = 0
+    while i < lenght:
+
+        if arr[i] == 'NOKEY':
+            count += 1
+        else :
+            bloc.append(arr[i])
+            count = 0
+        
+        if (count > 3):
+            res.append(bloc)
+            bloc = []
+
+        i += 1
+
+    res = clean_short_list(res)
+
+    res = key_rank_with_block(res)
+
+    return res
 
 
 if __name__ == "__main__":
@@ -117,7 +190,12 @@ if __name__ == "__main__":
     data = summeans_match(get_all_files())
     final = clean_res(data)
     
-    print("~~~~~~~~RESULTATS~~~~~~~~")
+    print("~~~~~~~~RESULTATS~~~~~~~~")    
+    
+    unite_letter(final)
+
+    res = key_rank_nokey(final)
+    
     '''
     print(len(final))
 
