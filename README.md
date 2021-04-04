@@ -14,11 +14,11 @@ Vous pouvez aussi exécuter la commande suivante :
 `pip install -r requirements.txt`
 
 ### Equipe
-maxime.olivier-mouton  
-stepan.kinossian  
-etienne.lacroix  
-sylvain.blanchard-gaillard  
-maxime.fenot  
+Maxime Olivier-Mouton - maxime.olivier-mouton  
+Stépan Kinpssian - stepan.kinossian  
+Etienne Lacroix - etienne.lacroix  
+Sylvain Blanchard-Gaillard - sylvain.blanchard-gaillard  
+Maxime Fenot - maxime.fenot  
 
 
 
