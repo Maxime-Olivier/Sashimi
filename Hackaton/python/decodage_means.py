@@ -5,25 +5,39 @@ import operator
 import random
 
 
+
+'''
+renvoie la courbe moyenne de toutes les trames d'un symbole
+input: nom du fichier (string)
+'''
 def get_average(file):
     average_plot = []
-    pics, info = get_pics_from_file("Hackaton/data/" + file)
-    for i in range(0, len(pics[0])): #on boucle autant de fois qu'il y a de valeurs
+    pics, _ = get_pics_from_file("Hackaton/data/" + file)
+    for i in range(len(pics[0])): #on boucle autant de fois qu'il y a de valeurs
         value = 0
-        for j in range(0, len(pics)): #on boucle sur chacun des échantillon pour recupérer sa ieme valeur
+        for j in range(len(pics)): #on boucle sur chacun des échantillon pour recupérer sa ieme valeur
             value += pics[j][i]
         average_plot.append(value / len(pics))
     
     return average_plot
 
 
+'''
+renvoie une liste contenant le premier élément de chaque tuple de la liste de départ
+input: liste de tuple à nettoyer
+'''
 def clean_res(l):
     res = []
-    for a, b in l:
+    for a, _ in l:
         res.append(a)
+
     return res
 
 
+'''
+renvoie un tableau à 2 dimensions contenant toutes les moyennes de tous les symboles
+input:
+'''
 def get_all_files():
     data = []  
     for file in os.listdir("Hackaton/data/"):
@@ -35,18 +49,20 @@ def get_all_files():
     return data
 
 
+'''
+renvoie pour chaque trame du fichier "LOGINMDP" le caractère qui se rapproche le plus de celle ci
+input: tableau à 2 dimensions 
+'''
 def summeans_match(avgs):
-    pics_loginmdp, info = get_pics_from_file("Hackaton/data/pics_LOGINMDP.bin")
+    pics_loginmdp, _ = get_pics_from_file("Hackaton/data/pics_LOGINMDP.bin")
     res = []
-    vrai_res = []
-    for trame in range(0, len(pics_loginmdp)):
+    for trame in range(len(pics_loginmdp)):
         diffs = []
-
         for name, key in avgs:
             diff = 0
-
-            for i in range(0, len(pics_loginmdp[trame])):
+            for i in range(len(pics_loginmdp[trame])):
                 diff += abs(key[i] - pics_loginmdp[trame][i]) /17
+            
             diffs.append((name,diff))
             diff = 0
 
@@ -55,10 +71,15 @@ def summeans_match(avgs):
     return res
 
 
+'''
+renvoie un tableau d'occurrences
+input: tableau de tuple 
+'''
 def count_occ(arr):
     res = []
+
     for key in arr:
-        found = False
+        found = False       
         for i in range(len(res)):
             if res[i][0] == key:
                 res[i] = (res[i][0],res[i][1] + 1)
@@ -70,31 +91,15 @@ def count_occ(arr):
     return res
 
 
-def key_rank(n, arr):
-    occ = []
-    res = []
-    for k in range(0, len(arr)):
-        if k % n == 0 and k != 0:
-            nb_occ = count_occ(occ)
-            nb_occ.sort(key=lambda tup: tup[1], reverse=True)
-            res.append(nb_occ[:3])
-            occ = []
-            nb_occ = []
-
-        occ.append(arr[k])
-
-
-    nb_occ = count_occ(occ)
-    nb_occ.sort()
-    res.append(nb_occ[:3])
-    return res
-
-
+'''
+renvoie un tableau regroupant les caractères ayant des variations similaires
+input: 
+'''
 def find_similar():
     data = get_all_files()
     res = []
-    for name_compare, pics_compare in data:
 
+    for name_compare, pics_compare in data:
         similar = []
         similar.append(name_compare)
 
@@ -110,9 +115,14 @@ def find_similar():
                 similar.append(name)
 
         res.append(similar)
+
     return res
      
-    
+
+'''
+transforme le tableau en les rassemblant par groupes de variations proches
+input: un tableau à une dimension
+'''
 def unite_letter(arr):
     for i in range(len(arr)):
         if (arr[i] in ['1', '2', '3', '4']):
@@ -141,30 +151,44 @@ def unite_letter(arr):
             arr[i] = "SPACE S"
             
             
+'''
+supprime toutes les listes de longueur inférieure à 10 du tableau
+input: tableau à 1 dimension
+'''
 def clean_short_list(arr):
     res = []
     for i in arr:
         if len(i) > 10:
             res.append(i)
+
     return res
 
 
+'''
+renvoie les 3 caractères ayant le plus d'occurences
+input: tableau de tuple
+'''
 def key_rank_with_block(arr):
     res = []
     for bloc in arr:
         nb_occ = count_occ(bloc)
         nb_occ.sort(key=lambda tup: tup[1], reverse=True)
         res.append(nb_occ[:3])
+
     return res
 
 
+'''
+renvoie une liste de tableaux contenant les caractères séparés à l'aide des symboles "NOKEY"
+input: tableau à une dimension
+'''
 def key_rank_nokey(arr):
     res = []
-    lenght = len(arr)
+    length = len(arr)
     i = 0
     bloc = []
     count = 0
-    while i < lenght:
+    for i in range(length):
 
         if arr[i] == 'NOKEY':
             count += 1
@@ -176,10 +200,7 @@ def key_rank_nokey(arr):
             res.append(bloc)
             bloc = []
 
-        i += 1
-
     res = clean_short_list(res)
-
     res = key_rank_with_block(res)
 
     return res
@@ -189,28 +210,21 @@ if __name__ == "__main__":
 
     data = summeans_match(get_all_files())
     final = clean_res(data)
-    
-    print("~~~~~~~~RESULTATS~~~~~~~~")    
-    
     unite_letter(final)
-
     res = key_rank_nokey(final)
-    
-    '''
-    print(len(final))
 
-    res = key_rank(120, final)
-    k = 1
+    print("~~~~~~~~RESULTATS~~~~~~~~") 
     print(res)
+
+    k = 1    
     for elm in res:
-        plt.subplot(6, 7, k)
+        plt.subplot(3, 5, k)
         res_letter = [i for i, _ in elm]
         res_num = [j for _,  j in elm]
         plt.bar(res_letter, res_num)
         k += 1
-    
+
+    mng = plt.get_current_fig_manager()
+    mng.window.state("zoomed")
+
     plt.show()
-    '''
-    res = find_similar()
-    for x in res:
-        print(x)
